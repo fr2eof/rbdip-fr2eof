@@ -4,12 +4,14 @@ ALTER TABLE customers ADD COLUMN last_name VARCHAR(255);
 CREATE OR REPLACE FUNCTION sync_customer_full_name()
     RETURNS TRIGGER AS $$
 BEGIN
-    NEW.full_name :=
-            CASE
-                WHEN NEW.last_name IS NULL OR NEW.last_name = ''
-                    THEN NEW.first_name
-                ELSE NEW.first_name || ' ' || NEW.last_name
-                END;
+    IF NEW.first_name IS NOT NULL OR NEW.last_name IS NOT NULL THEN
+        NEW.full_name :=
+                CASE
+                    WHEN NEW.last_name IS NULL OR NEW.last_name = ''
+                        THEN NEW.first_name
+                    ELSE NEW.first_name || ' ' || NEW.last_name
+                    END;
+    END IF;
 
     RETURN NEW;
 END;
