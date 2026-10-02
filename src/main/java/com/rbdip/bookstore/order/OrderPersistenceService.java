@@ -22,7 +22,7 @@ public class OrderPersistenceService {
 
     @Transactional
     public Order save(CreateOrderRequest request, List<ResolvedOrderLine> lines) {
-        Customer customer = customerRepository.save(new Customer(
+        Customer customer = customerRepository.save(Customer.fromFullName(
                 request.customerFullName(), request.customerAddress(), request.customerPhone()));
         Order order = orderRepository.save(new Order(customer, "new"));
 
