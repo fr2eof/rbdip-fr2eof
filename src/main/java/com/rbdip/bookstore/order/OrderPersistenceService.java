@@ -27,7 +27,7 @@ public class OrderPersistenceService {
         Order order = orderRepository.save(new Order(customer, "new"));
 
         for (ResolvedOrderLine line : lines) {
-            orderItemRepository.save(new OrderItem(order.getId(), line.product(), line.quantity()));
+            orderItemRepository.save(new OrderItem(order, line.product(), line.quantity()));
         }
 
         return order;
